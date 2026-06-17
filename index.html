@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>萬家香早餐店 - 互動式點餐菜單</title>
+  <meta name="description" content="歡迎光臨萬家香早餐店！我們提供手作粉漿蛋餅、炭烤肉蛋吐司、經典漢堡及鐵板麵，搭配醇厚香濃的小農鮮奶茶。立即線上點餐，開啟您美好的一天！">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- FontAwesome Icons for modern aesthetic look -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Header Section with Banner Background -->
+  <header id="headerBanner">
+    <div class="header-content">
+      <h1 class="header-logo" id="headerTitle">萬家香早餐店</h1>
+      <p class="header-subtitle" id="headerSubtitle">用心手作的晨光美味，開啟您活力滿滿的一天</p>
+      
+      <div class="header-info-badges">
+        <div class="info-badge">
+          <i class="fa-regular fa-clock"></i>
+          <span>營業時間 06:00 - 13:00</span>
+        </div>
+        <div class="info-badge">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>台北市大安區幸福路 88 號</span>
+        </div>
+        <div class="info-badge">
+          <i class="fa-solid fa-phone"></i>
+          <span>(02) 2789-5678</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Area -->
+  <main class="app-container">
+    
+    <!-- Left Column: Menu Controls & Items -->
+    <section class="menu-main-panel">
+      
+      <!-- Sticky Navigation & Search -->
+      <div class="menu-controls" id="menuControls">
+        
+        <!-- Search bar -->
+        <div class="search-bar-container">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="searchInput" class="search-input" placeholder="搜尋您想吃的早餐... (例如: 蛋餅、吐司、奶茶)">
+        </div>
+        
+        <!-- Category filters -->
+        <div class="category-tabs" id="categoryTabs">
+          <!-- Dynamically generated via JS -->
+        </div>
+        
+      </div>
+      
+      <!-- Food Grid -->
+      <div class="menu-section" id="menuGrid">
+        <!-- Dynamically generated via JS -->
+      </div>
+      
+    </section>
+
+    <!-- Right Column: Shopping Cart (Sticky Sidebar for Desktop) -->
+    <aside class="cart-sidebar" id="cartSidebar">
+      <div class="cart-header">
+        <h3 class="cart-title">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span>已點餐點</span>
+          <span class="cart-count-badge" style="display: none;">0</span>
+        </h3>
+        <button class="clear-cart-btn" onclick="clearCart()" aria-label="清空購物車">
+          <i class="fa-regular fa-trash-can"></i> 清空
+        </button>
+      </div>
+
+      <!-- Scrollable Cart Item List -->
+      <div class="cart-items-list">
+        <!-- Dynamically generated via JS -->
+      </div>
+
+      <!-- Checkout Summary -->
+      <div class="cart-summary">
+        <div class="cart-total-row">
+          <span>預估小計</span>
+          <span class="cart-total-val">$0</span>
+        </div>
+        <button class="cart-checkout-btn" onclick="checkoutOrder()" disabled>
+          <i class="fa-solid fa-paper-plane"></i>
+          <span>確認送出訂單</span>
+        </button>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Floating Mobile Cart Button -->
+  <button class="floating-cart-trigger" id="floatingCartBtn" onclick="toggleMobileCart()" aria-label="查看購物車">
+    <i class="fa-solid fa-basket-shopping" style="font-size: 1.5rem;"></i>
+    <span class="floating-cart-badge" style="display: none;">0</span>
+  </button>
+
+  <!-- Customization Modal Overlay -->
+  <div class="modal-overlay" id="customizationModal">
+    <div class="modal-container">
+      
+      <!-- Customization Header (Icon/Illustration) -->
+      <div class="modal-header-img-wrapper">
+        <div id="modalHeaderIcon" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #fff7ed, #ffedd5);">
+          <!-- Dynamic SVG Food Icon -->
+        </div>
+        <button class="close-modal-btn" onclick="closeCustomizationModal()" aria-label="關閉">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <!-- Customization Scrollable Body -->
+      <div class="modal-body">
+        <div class="modal-title-row">
+          <h2 class="modal-title" id="modalTitle">餐點名稱</h2>
+        </div>
+        <p class="modal-desc" id="modalDesc">餐點說明描述</p>
+        
+        <!-- Interactive form -->
+        <form id="customizationForm" onsubmit="event.preventDefault();">
+          <!-- Dynamically generated options -->
+        </form>
+      </div>
+      
+      <!-- Customization Footer -->
+      <div class="modal-footer">
+        <div class="modal-total-price-wrapper">
+          <span class="modal-total-label">單價小計</span>
+          <span class="modal-total-price" id="modalTotalPrice">0</span>
+        </div>
+        <button type="button" class="add-customized-to-cart-btn" onclick="submitCustomizedItem()">
+          加入購物車
+        </button>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Receipt / Success Modal Overlay -->
+  <div class="modal-overlay" id="receiptModal">
+    <div class="modal-container" style="max-width: 420px;">
+      <div class="receipt-container">
+        
+        <div class="receipt-icon">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        
+        <h2 class="receipt-title">點餐已送出！</h2>
+        <p class="receipt-subtitle">感謝您的點購，請憑下方編號至櫃檯取餐付款。</p>
+        
+        <!-- Ticket Box -->
+        <div class="receipt-details-card">
+          <div class="receipt-row number">
+            <span id="receiptNumber">A-1234</span>
+          </div>
+          
+          <div id="receiptItems">
+            <!-- Items list -->
+          </div>
+          
+          <div class="receipt-row total" id="receiptTotal">
+            <span>總計</span>
+            <span>$0</span>
+          </div>
+        </div>
+        
+        <button class="receipt-close-btn" onclick="closeReceiptModal()">
+          完成並關閉
+        </button>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="footer-content">
+      
+      <div class="footer-section-brand">
+        <h3 class="footer-brand-title">萬家香早餐店</h3>
+        <p class="footer-brand-desc">我們堅持每日清晨現場烹調，選用在地小農新鮮食材，用愛與熱情做好每一份早餐，為每位顧客呈獻最道地的家常滋味。</p>
+      </div>
+      
+      <div class="footer-section-info">
+        <h4 class="footer-section-title">聯絡與營業資訊</h4>
+        <ul class="footer-list">
+          <li><i class="fa-solid fa-phone"></i> (02) 2789-5678</li>
+          <li><i class="fa-solid fa-envelope"></i> service@wanjiaxiang.com</li>
+          <li><i class="fa-solid fa-location-dot"></i> 台北市大安區幸福路 88 號</li>
+          <li><i class="fa-regular fa-calendar-days"></i> 週一至週日 06:00 - 13:00</li>
+        </ul>
+      </div>
+      
+      <div class="footer-section-links">
+        <h4 class="footer-section-title">安心宣言</h4>
+        <ul class="footer-list">
+          <li><i class="fa-solid fa-shield-halved"></i> 嚴選優質洗選蛋</li>
+          <li><i class="fa-solid fa-shield-halved"></i> 採用非基因改造黃豆</li>
+          <li><i class="fa-solid fa-shield-halved"></i> 豬肉來源安全合格檢驗</li>
+          <li><i class="fa-solid fa-shield-halved"></i> 每日廚房高標準清潔</li>
+        </ul>
+      </div>
+      
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 萬家香早餐店 版權所有. Design with ❤️ by Antigravity AI.</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript App Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
